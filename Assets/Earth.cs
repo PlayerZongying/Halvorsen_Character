@@ -23,11 +23,11 @@ public class Earth : MonoBehaviour
 
     void MoveMoon()
     {
-        // Vector3 pos = new Vector3(Mathf.Cos(Time.time * angularVel), 0, Mathf.Sin(Time.time * angularVel)) * radius;
-        // moon.transform.position = transform.TransformPoint(pos);
+        Vector3 pos = new Vector3(Mathf.Cos(Time.time * angularVel), 0, Mathf.Sin(Time.time * angularVel)) * radius;
+        moon.transform.position = transform.TransformPoint(pos);
 
-        Vector3 localPos = transform.InverseTransformPoint(moon.transform.position);
-        moon.transform.position = transform.TransformPoint(localPos);
+        //Vector3 localPos = transform.InverseTransformPoint(moon.transform.position);
+        //moon.transform.position = transform.TransformPoint(localPos);
     }
 
     void MoveTrail()
@@ -37,7 +37,7 @@ public class Earth : MonoBehaviour
         int count = moonTrail.positionCount;
         Vector3[] vertices = new Vector3[count];
         moonTrail.GetPositions(vertices);
-        print(count);
+        // print(count);
         for (int i = 0; i < count; i++)
         {
             Vector3 vertex = vertices[i] - transform.position ;
