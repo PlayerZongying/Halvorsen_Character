@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
 
@@ -6,6 +7,9 @@ public class Earth : MonoBehaviour
 {
     public GameObject moon;
     public TrailRenderer moonTrail;
+
+    public List<GameObject> _moons;
+    public List<TrailRenderer> _moonTrailRenderers;
 
     public float velocity = 10;
 
@@ -17,8 +21,18 @@ public class Earth : MonoBehaviour
     public Quaternion lastRot = Quaternion.identity;
 
     // Start is called before the first frame update
+    private void Awake()
+    {
+// #if UNITY_EDITOR
+//         QualitySettings.vSyncCount = 2; // VSync must be disabled
+//         // Application.targetFrameRate = 60;
+// #endif
+    }
+
     void Start()
     {
+        SetupMoons();
+
         transform.rotation = Quaternion.Euler(159.2f, 23.2f, 27.16f);
     }
 
@@ -26,18 +40,29 @@ public class Earth : MonoBehaviour
     void Update()
     {
         MoveEarth();
-        
+
         // order fucking matters
         MoveTrail();
         MoveMoon();
+        
 
 
-        // MoveTheCrazyFuckingTrail();
+        // order fucking matters
+        // MoveTrails();
+        // MoveMoons();
     }
+
+    // private void FixedUpdate()
+    // {
+    //     MoveEarth();
+    //     
+    //     // order fucking matters
+    //     MoveTrail();
+    //     MoveMoon();
+    // }
 
     private void LateUpdate()
     {
-        
     }
 
     void MoveEarth()
@@ -57,6 +82,35 @@ public class Earth : MonoBehaviour
     {
         Vector3 pos = new Vector3(Mathf.Cos(Time.time * angularVel), 0, Mathf.Sin(Time.time * angularVel)) * radius;
         moon.transform.position = transform.TransformPoint(pos);
+
+        //Vector3 localPos = transform.InverseTransformPoint(moon.transform.position);
+        //moon.transform.position = transform.TransformPoint(localPos);
+    }
+
+
+    void SetupMoons()
+    {
+        // _moons.Add(moon);
+
+        for (int i = 0; i < 5; i++)
+        {
+            GameObject newMoon = Instantiate(moon, Vector3.zero, Quaternion.identity);
+            _moons.Add(newMoon);
+            print(newMoon.name);
+            TrailRenderer trailRenderer = newMoon.GetComponentInChildren<TrailRenderer>();
+            _moonTrailRenderers.Add(trailRenderer);
+        }
+    }
+
+    void MoveMoons()
+    {
+        for (int i = 0; i < _moons.Count; i++)
+        {
+            float phase = Mathf.PI * 2 / (300f / 60f) * i;
+            Vector3 pos = new Vector3(Mathf.Cos(Time.time * angularVel - phase), 0,
+                Mathf.Sin(Time.time * angularVel) - phase) * radius;
+            _moons[i].transform.position = transform.TransformPoint(pos);
+        }
 
         //Vector3 localPos = transform.InverseTransformPoint(moon.transform.position);
         //moon.transform.position = transform.TransformPoint(localPos);
@@ -84,11 +138,11 @@ public class Earth : MonoBehaviour
     {
         int count = moonTrail.positionCount;
         Vector3[] vertices = new Vector3[count];
-        int realCount =moonTrail.GetPositions(vertices);
+        int realCount = moonTrail.GetPositions(vertices);
         // print(count);
-        
+
         UIFPS.instance.TrailCount.text = count.ToString();
-        
+
         Vector3 curPos = transform.position;
         for (int i = 0; i < count; i++)
         {
@@ -101,5 +155,31 @@ public class Earth : MonoBehaviour
         // print("-----------------------------------");
         lastPos = curPos;
         moonTrail.SetPositions(vertices);
+    }
+
+    void MoveTrails()
+    {
+        foreach (TrailRenderer trail in _moonTrailRenderers)
+        {
+            int count = trail.positionCount;
+            Vector3[] vertices = new Vector3[count];
+            int realCount = trail.GetPositions(vertices);
+            // print(count);
+
+            UIFPS.instance.TrailCount.text = count.ToString();
+
+            Vector3 curPos = transform.position;
+            for (int i = 0; i < count; i++)
+            {
+                Vector3 vertex = vertices[i] - curPos;
+                vertex += curPos - lastPos;
+                Vector3 newVertex = transform.TransformPoint(vertex);
+                vertices[i] = newVertex;
+            }
+
+            // print("-----------------------------------");
+            lastPos = curPos;
+            trail.SetPositions(vertices);
+        }
     }
 }
