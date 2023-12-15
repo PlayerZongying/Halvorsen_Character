@@ -9,11 +9,16 @@ public class EarthWithMoons : MonoBehaviour
 {
     private const int StandardFPS = 300;
     [Range(15, 300)] public int maxFPS = 300;
+    public bool isSetPhase;
+    public float setPhase = 10;
+    public float timeScale = 1;
+    public bool initRotate = true;
+
 
     public GameObject realMoon;
     public TrailRenderer realMoonTrail;
     public LineRenderer realMoonLine;
-    
+
     public GameObject moonPrefab;
     public List<GameObject> _moons;
     public List<TrailRenderer> _moonTrailRenderers;
@@ -39,9 +44,9 @@ public class EarthWithMoons : MonoBehaviour
 
     void Start()
     {
+        Time.timeScale = timeScale;
         SetupMoons();
-
-        transform.rotation = Quaternion.Euler(159.2f, 23.2f, 27.16f);
+        if (initRotate) transform.rotation = Quaternion.Euler(159.2f, 23.2f, 27.16f);
     }
 
     // Update is called once per frame
@@ -52,7 +57,7 @@ public class EarthWithMoons : MonoBehaviour
         // order fucking matters
         MoveTrails();
         MoveMoons();
-        
+
         MoveMoon();
     }
 
@@ -77,7 +82,7 @@ public class EarthWithMoons : MonoBehaviour
     void SetupMoons()
     {
         // _moons.Add(moon);
-        int moonsCount = Mathf.CeilToInt((float)StandardFPS / maxFPS);
+        int moonsCount = Mathf.RoundToInt((float)StandardFPS / maxFPS);
 
         for (int i = 0; i < moonsCount; i++)
         {
@@ -87,7 +92,7 @@ public class EarthWithMoons : MonoBehaviour
             _moonTrailRenderers.Add(trailRenderer);
         }
     }
-    
+
     void MoveMoon()
     {
         Vector3 pos = new Vector3(Mathf.Cos(Time.time * angularVel), 0, Mathf.Sin(Time.time * angularVel)) * radius;
@@ -102,7 +107,7 @@ public class EarthWithMoons : MonoBehaviour
     {
         for (int i = 0; i < _moons.Count; i++)
         {
-            float phase = Mathf.PI * 2 / (300f / 60f) * i;
+            float phase = angularVel / StandardFPS * i;
             Vector3 pos = new Vector3(Mathf.Cos(Time.time * angularVel - phase), 0,
                 Mathf.Sin(Time.time * angularVel) - phase) * radius;
             _moons[i].transform.position = transform.TransformPoint(pos);
@@ -116,9 +121,11 @@ public class EarthWithMoons : MonoBehaviour
     {
         for (int i = 0; i < _moons.Count; i++)
         {
-            float phase = Mathf.PI * 2 / maxFPS / ((float)StandardFPS / maxFPS) * i;
-            Vector3 pos = new Vector3(Mathf.Cos(Time.time * angularVel - phase), 0,
-                Mathf.Sin(Time.time * angularVel - phase)) * radius;
+            float phase = Time.deltaTime * angularVel * ((float)maxFPS / StandardFPS) * i;
+            if (isSetPhase) phase = setPhase * i;
+
+            Vector3 pos = new Vector3(Mathf.Cos((Time.time - Time.deltaTime) * angularVel - phase), 0,
+                Mathf.Sin((Time.time - Time.deltaTime) * angularVel - phase)) * radius;
             _moons[i].transform.position = transform.TransformPoint(pos);
         }
 
@@ -130,15 +137,14 @@ public class EarthWithMoons : MonoBehaviour
     void MoveTrails()
     {
         Vector3[] allVertices = Array.Empty<Vector3>();
-        
+
         foreach (TrailRenderer trail in _moonTrailRenderers)
         {
             int count = trail.positionCount;
             Vector3[] vertices = new Vector3[count];
             int realCount = trail.GetPositions(vertices);
-            print(count);
+            // print(count);
 
-            
 
             Vector3 curPos = transform.position;
             for (int i = 0; i < count; i++)
@@ -151,7 +157,7 @@ public class EarthWithMoons : MonoBehaviour
 
             lastPos = curPos;
             trail.SetPositions(vertices);
-            allVertices = allVertices.Concat(vertices).ToArray() ;
+            allVertices = allVertices.Concat(vertices).ToArray();
         }
 
         Vector3[] reorderedVertices = new Vector3[allVertices.Length];
@@ -162,7 +168,8 @@ public class EarthWithMoons : MonoBehaviour
         {
             for (int j = 0; j < _moons.Count; j++)
             {
-                reorderedVertices[i * _moons.Count + j] = allVertices[j * verticeInOneTrail + i];
+                reorderedVertices[(i * _moons.Count + _moons.Count - 1 - j)] =
+                    allVertices[(_moons.Count - 1 - j) * verticeInOneTrail + i];
             }
         }
 
@@ -172,27 +179,38 @@ public class EarthWithMoons : MonoBehaviour
             Vector3[] enlarge = new Vector3[reorderedVertices.Length - vertexCount];
             realMoonTrail.AddPositions(enlarge);
         }
-        
+
+        if (reorderedVertices.Length > _moons.Count * 2 + 2)
+        {
+            for (int i = 0; i < _moons.Count * 2; i++)
+            {
+                // print(reorderedVertices[i]);
+                Vector3 d1 = reorderedVertices[i + 1] - reorderedVertices[i];
+                Vector3 d2 = reorderedVertices[i + 2] - reorderedVertices[i + 1];
+                print(Vector3.Dot(d1.normalized, d2.normalized));
+            }
+        }
+
         // if (reorderedVertices.Length > realMoonLine.positionCount)
         // {
         //     Vector3[] enlarge = new Vector3[reorderedVertices.Length - realMoonLine.positionCount];
         //     realMoonTrail.AddPositions(enlarge);
         // }
-        
+
         // realMoonLine.SetPositions(reorderedVertices);
-        
+
         realMoonTrail.SetPositions(reorderedVertices);
-        
-        
+
+
         // Vector3[] array1 = new Vector3[reorderedVertices.Length];
         // for (int i = 0; i < reorderedVertices.Length; i++)
         // {
         //     array1[i] = Vector3.zero;
         // }
         // realMoonTrail.SetPositions(array1);
-        
+
         UIFPS.instance.TrailCount.text = realMoonTrail.positionCount.ToString();
-        print(reorderedVertices.Length);
+        // print(reorderedVertices.Length);
         print("-----------------------------------");
     }
 }
