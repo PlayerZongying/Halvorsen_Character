@@ -5,11 +5,13 @@ using UnityEngine;
 
 public class Earth : MonoBehaviour
 {
+    public bool initRotate = true;
+    public bool setFPS = false;
     private const int StandardFPS = 300;
     [Range(15, 300)] public int maxFPS = 300;
     public GameObject moon;
     public TrailRenderer moonTrail;
-    
+
     public float timeScale = 1;
 
     public List<GameObject> _moons;
@@ -31,15 +33,21 @@ public class Earth : MonoBehaviour
 //         QualitySettings.vSyncCount = 2; // VSync must be disabled
 //         // Application.targetFrameRate = 60;
 // #endif
-        Application.targetFrameRate = maxFPS;
+        if (setFPS)
+        {
+            Application.targetFrameRate = maxFPS;
+        }
     }
 
     void Start()
     {
+        if (initRotate)
+        {
+            transform.rotation = Quaternion.Euler(159.2f, 23.2f, 27.16f);
+        }
+
         Time.timeScale = timeScale;
         // SetupMoons();
-
-        // transform.rotation = Quaternion.Euler(159.2f, 23.2f, 27.16f);
     }
 
     // Update is called once per frame
@@ -50,7 +58,6 @@ public class Earth : MonoBehaviour
         // order fucking matters
         MoveTrail();
         MoveMoon();
-        
 
 
         // order fucking matters

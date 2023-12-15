@@ -518,7 +518,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7af46585769d6c1438ff2a60175e085f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxFPS: 300
+  initRotate: 1
+  setFPS: 1
+  maxFPS: 15
   moon: {fileID: 3338361638699313372}
   moonTrail: {fileID: 1324081780}
   timeScale: 1
@@ -627,9 +629,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae49602b69f10394a97c8b81aaf8e82c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxFPS: 300
-  isSetPhase: 0
-  setPhase: 0.001
+  setFPS: 1
+  maxFPS: 15
+  isSetPhase: 1
+  setPhase: 0
   timeScale: 1
   initRotate: 1
   realMoon: {fileID: 3338361638699313372}
@@ -2558,6 +2561,10 @@ PrefabInstance:
     - target: {fileID: 4015259110729566987, guid: 944384f521c7c9b4ca27af2cfac4079f, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893509016601281712, guid: 944384f521c7c9b4ca27af2cfac4079f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6829898956634095509, guid: 944384f521c7c9b4ca27af2cfac4079f, type: 3}
       propertyPath: m_LocalPosition.x

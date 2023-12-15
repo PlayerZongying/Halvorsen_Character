@@ -8,6 +8,7 @@ using UnityEngine.Serialization;
 public class EarthWithMoons : MonoBehaviour
 {
     private const int StandardFPS = 300;
+    public bool setFPS = false;
     [Range(15, 300)] public int maxFPS = 300;
     public bool isSetPhase;
     public float setPhase = 10;
@@ -39,7 +40,10 @@ public class EarthWithMoons : MonoBehaviour
 //         QualitySettings.vSyncCount = 2; // VSync must be disabled
 //         // Application.targetFrameRate = 60;
 // #endif
-        Application.targetFrameRate = maxFPS;
+        if (setFPS)
+        {
+            Application.targetFrameRate = maxFPS;
+        }
     }
 
     void Start()
@@ -151,7 +155,13 @@ public class EarthWithMoons : MonoBehaviour
             {
                 Vector3 vertex = vertices[i] - curPos;
                 vertex += curPos - lastPos;
-                Vector3 newVertex = transform.TransformPoint(vertex);
+                Vector3 newVertex = transform.TransformPoint(vertex);;
+                
+                for (int j = 1; j < _moons.Count; j++)
+                {
+                    newVertex  = transform.TransformPoint(newVertex);
+                }
+
                 vertices[i] = newVertex;
             }
 
@@ -161,7 +171,7 @@ public class EarthWithMoons : MonoBehaviour
         }
 
         Vector3[] reorderedVertices = new Vector3[allVertices.Length];
-        print(reorderedVertices.Length);
+        // print(reorderedVertices.Length);
 
         int verticeInOneTrail = allVertices.Length / _moons.Count;
         for (int i = 0; i < verticeInOneTrail; i++)
@@ -180,16 +190,17 @@ public class EarthWithMoons : MonoBehaviour
             realMoonTrail.AddPositions(enlarge);
         }
 
-        if (reorderedVertices.Length > _moons.Count * 2 + 2)
-        {
-            for (int i = 0; i < _moons.Count * 2; i++)
-            {
-                // print(reorderedVertices[i]);
-                Vector3 d1 = reorderedVertices[i + 1] - reorderedVertices[i];
-                Vector3 d2 = reorderedVertices[i + 2] - reorderedVertices[i + 1];
-                print(Vector3.Dot(d1.normalized, d2.normalized));
-            }
-        }
+        // //direction test
+        // if (reorderedVertices.Length > _moons.Count * 2 + 2)
+        // {
+        //     for (int i = 0; i < _moons.Count * 2; i++)
+        //     {
+        //         // print(reorderedVertices[i]);
+        //         Vector3 d1 = reorderedVertices[i + 1] - reorderedVertices[i];
+        //         Vector3 d2 = reorderedVertices[i + 2] - reorderedVertices[i + 1];
+        //         print(Vector3.Dot(d1.normalized, d2.normalized));
+        //     }
+        // }
 
         // if (reorderedVertices.Length > realMoonLine.positionCount)
         // {
@@ -211,6 +222,6 @@ public class EarthWithMoons : MonoBehaviour
 
         UIFPS.instance.TrailCount.text = realMoonTrail.positionCount.ToString();
         // print(reorderedVertices.Length);
-        print("-----------------------------------");
+        // print("-----------------------------------");
     }
 }
