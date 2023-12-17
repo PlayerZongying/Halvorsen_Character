@@ -499,6 +499,7 @@ GameObject:
   - component: {fileID: 653572819}
   - component: {fileID: 653572818}
   - component: {fileID: 653572823}
+  - component: {fileID: 653572824}
   m_Layer: 0
   m_Name: Earth
   m_TagString: Untagged
@@ -519,7 +520,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initRotate: 1
-  setFPS: 1
+  setFPS: 0
   maxFPS: 15
   moon: {fileID: 3338361638699313372}
   moonTrail: {fileID: 1324081780}
@@ -624,20 +625,49 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 653572817}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ae49602b69f10394a97c8b81aaf8e82c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  setFPS: 1
-  maxFPS: 15
+  setFPS: 0
+  maxFPS: 30
   isSetPhase: 1
   setPhase: 0
   timeScale: 1
-  initRotate: 1
+  initRotate: 0
   realMoon: {fileID: 3338361638699313372}
   realMoonTrail: {fileID: 1324081780}
   realMoonLine: {fileID: 3338361638699313377}
+  moonPrefab: {fileID: 8323201621771359129, guid: 0c10a9a977791d74c9072ab8ebcdbd4f, type: 3}
+  _moons: []
+  _moonTrailRenderers: []
+  velocity: 10
+  angularVel: 1
+  radius: 5
+  lastPos: {x: 0, y: 0, z: 0}
+  lastRot: {x: 0, y: 0, z: 0, w: 1}
+--- !u!114 &653572824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 653572817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc1601930a2a3584a8b4526b05626771, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  setFPS: 1
+  maxFPS: 15
+  isSetPhase: 0
+  setPhase: 0
+  timeScale: 1
+  initRotate: 0
+  realMoon: {fileID: 3338361638699313372}
+  realMoonTrail: {fileID: 1324081780}
+  realMoonLine: {fileID: 0}
   moonPrefab: {fileID: 8323201621771359129, guid: 0c10a9a977791d74c9072ab8ebcdbd4f, type: 3}
   _moons: []
   _moonTrailRenderers: []
@@ -2563,6 +2593,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4893509016601281712, guid: 944384f521c7c9b4ca27af2cfac4079f, type: 3}
+      propertyPath: m_Name
+      value: RealMoonTrail
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893509016601281712, guid: 944384f521c7c9b4ca27af2cfac4079f, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -2622,9 +2656,9 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1665618342}
+  - {fileID: 1229180201}
   - {fileID: 1052690565}
   - {fileID: 494176046}
   - {fileID: 653572822}
   - {fileID: 7888275126488032173}
-  - {fileID: 1665618342}
-  - {fileID: 1229180201}

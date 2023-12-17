@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class EarthWithMoons : MonoBehaviour
+public class EarthWithMoonV2 : MonoBehaviour
 {
     private const int StandardFPS = 300;
     public bool setFPS = false;
@@ -37,10 +37,10 @@ public class EarthWithMoons : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
-// #if UNITY_EDITOR
-//         QualitySettings.vSyncCount = 2; // VSync must be disabled
-//         // Application.targetFrameRate = 60;
-// #endif
+        // #if UNITY_EDITOR
+        //         QualitySettings.vSyncCount = 2; // VSync must be disabled
+        //         // Application.targetFrameRate = 60;
+        // #endif
         if (setFPS)
         {
             Application.targetFrameRate = maxFPS;
@@ -61,10 +61,11 @@ public class EarthWithMoons : MonoBehaviour
 
         // order fucking matters
         MoveTrails();
-        
+
         MoveMoons();
         MoveMoon();
 
+        SetNewVertexInTrails();
     }
 
     private void LateUpdate()
@@ -105,13 +106,13 @@ public class EarthWithMoons : MonoBehaviour
         // Vector3 pos = new Vector3(Mathf.Cos(Time.time * angularVel), 0, Mathf.Sin(Time.time * angularVel)) * radius;
         // realMoon.transform.position = transform.TransformPoint(pos);
     }
-    
+
     void MoveMoon()
     {
         // print($"Move real moon at: {Time.time}");
-        
+
         realMoon.transform.position = _moons[0].transform.position;
-        
+
         // Vector3 pos = new Vector3(Mathf.Cos(Time.time * angularVel), 0, Mathf.Sin(Time.time * angularVel)) * radius;
         // realMoon.transform.position = transform.TransformPoint(pos);
     }
@@ -153,8 +154,9 @@ public class EarthWithMoons : MonoBehaviour
     {
         Vector3[] allVertices = Array.Empty<Vector3>();
 
-        foreach (TrailRenderer trail in _moonTrailRenderers)
+        for(int index = 0; index < _moons.Count; index++)
         {
+            TrailRenderer trail = _moonTrailRenderers[index];
             int count = trail.positionCount;
             Vector3[] vertices = new Vector3[count];
             int realCount = trail.GetPositions(vertices);
@@ -166,10 +168,16 @@ public class EarthWithMoons : MonoBehaviour
             {
                 Vector3 vertex = vertices[i] - curPos;
                 vertex += curPos - lastPos;
-                
+
                 // Vector3 newVertex = transform.TransformPoint(vertex);;
-                Vector3 newVertex =  transform.rotation * vertex;;
                 
+                Vector3 newVertex = transform.rotation * vertex;
+
+                for (int j = 1; j < _moons.Count; j++)
+                {
+                    newVertex = transform.rotation * newVertex;
+                }
+
                 vertices[i] = newVertex;
             }
 
@@ -177,6 +185,37 @@ public class EarthWithMoons : MonoBehaviour
             trail.SetPositions(vertices);
             allVertices = allVertices.Concat(vertices).ToArray();
         }
+        
+        // foreach (TrailRenderer trail in _moonTrailRenderers)
+        // {
+        //     int count = trail.positionCount;
+        //     Vector3[] vertices = new Vector3[count];
+        //     int realCount = trail.GetPositions(vertices);
+        //     // print(count);
+        //
+        //
+        //     Vector3 curPos = transform.position;
+        //     for (int i = 0; i < count; i++)
+        //     {
+        //         Vector3 vertex = vertices[i] - curPos;
+        //         vertex += curPos - lastPos;
+        //
+        //         // Vector3 newVertex = transform.TransformPoint(vertex);;
+        //         
+        //         Vector3 newVertex = transform.rotation * vertex;
+        //
+        //         for (int j = 1; j < _moons.Count; j++)
+        //         {
+        //             newVertex = transform.rotation * newVertex;
+        //         }
+        //
+        //         vertices[i] = newVertex;
+        //     }
+        //
+        //     lastPos = curPos;
+        //     trail.SetPositions(vertices);
+        //     allVertices = allVertices.Concat(vertices).ToArray();
+        // }
 
         Vector3[] reorderedVertices = new Vector3[allVertices.Length];
         // print(reorderedVertices.Length);
@@ -231,5 +270,22 @@ public class EarthWithMoons : MonoBehaviour
         UIFPS.instance.TrailCount.text = realMoonTrail.positionCount.ToString();
         // print(reorderedVertices.Length);
         // print("-----------------------------------");
+    }
+
+    void SetNewVertexInTrails()
+    {
+        for (int i = 0; i < _moons.Count; i++)
+        {
+            TrailRenderer trail = _moonTrailRenderers[i];
+            int count = trail.positionCount;
+            Vector3 newestVertex = trail.GetPosition(count - 1);
+
+            for (int j = 0; j < i; j++)
+            {
+                newestVertex = transform.rotation * newestVertex;
+            }
+            
+            trail.SetPosition(count - 1, newestVertex);
+        }
     }
 }

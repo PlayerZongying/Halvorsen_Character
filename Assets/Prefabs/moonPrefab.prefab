@@ -119,12 +119,16 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -8580802779668577491, guid: 46c233e98c4a5ea4990305dd51cbc60b, type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].time
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8580802779668577491, guid: 46c233e98c4a5ea4990305dd51cbc60b, type: 3}
       propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[1].time
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8580802779668577491, guid: 46c233e98c4a5ea4990305dd51cbc60b, type: 3}
       propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
-      value: 0.13829689
+      value: 0.10101318
       objectReference: {fileID: 0}
     - target: {fileID: -8580802779668577491, guid: 46c233e98c4a5ea4990305dd51cbc60b, type: 3}
       propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].inWeight
@@ -177,6 +181,10 @@ PrefabInstance:
     - target: {fileID: 8987761197008063638, guid: 46c233e98c4a5ea4990305dd51cbc60b, type: 3}
       propertyPath: m_Name
       value: Trail
+      objectReference: {fileID: 0}
+    - target: {fileID: 8987761197008063638, guid: 46c233e98c4a5ea4990305dd51cbc60b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
