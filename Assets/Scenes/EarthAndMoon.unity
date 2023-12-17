@@ -660,11 +660,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   setFPS: 1
-  maxFPS: 15
+  maxFPS: 30
   isSetPhase: 0
   setPhase: 0
   timeScale: 1
   initRotate: 0
+  rotationController: {fileID: 678885896}
   realMoon: {fileID: 3338361638699313372}
   realMoonTrail: {fileID: 1324081780}
   realMoonLine: {fileID: 0}
@@ -676,6 +677,37 @@ MonoBehaviour:
   radius: 5
   lastPos: {x: 0, y: 0, z: 0}
   lastRot: {x: 0, y: 0, z: 0, w: 1}
+--- !u!1 &678885896
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 678885897}
+  m_Layer: 0
+  m_Name: RotationController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &678885897
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 678885896}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1052690562
 GameObject:
   m_ObjectHideFlags: 0
@@ -2598,7 +2630,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4893509016601281712, guid: 944384f521c7c9b4ca27af2cfac4079f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6829898956634095509, guid: 944384f521c7c9b4ca27af2cfac4079f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2660,5 +2692,6 @@ SceneRoots:
   - {fileID: 1229180201}
   - {fileID: 1052690565}
   - {fileID: 494176046}
+  - {fileID: 678885897}
   - {fileID: 653572822}
   - {fileID: 7888275126488032173}

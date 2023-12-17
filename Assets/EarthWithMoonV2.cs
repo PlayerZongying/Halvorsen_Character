@@ -16,6 +16,8 @@ public class EarthWithMoonV2 : MonoBehaviour
     public float timeScale = 1;
     public bool initRotate = true;
 
+    public GameObject rotationController;
+
 
     public GameObject realMoon;
     public TrailRenderer realMoonTrail;
@@ -57,6 +59,7 @@ public class EarthWithMoonV2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        RotateEarth();
         MoveEarth();
 
         // order fucking matters
@@ -70,6 +73,12 @@ public class EarthWithMoonV2 : MonoBehaviour
 
     private void LateUpdate()
     {
+    }
+
+    void RotateEarth()
+    {
+        transform.rotation =
+            Quaternion.Slerp(transform.rotation, rotationController.transform.rotation, Time.deltaTime);
     }
 
     void MoveEarth()
@@ -221,12 +230,20 @@ public class EarthWithMoonV2 : MonoBehaviour
         // print(reorderedVertices.Length);
 
         int verticeInOneTrail = allVertices.Length / _moons.Count;
-        for (int i = 0; i < verticeInOneTrail; i++)
+        // for (int i = 0; i < verticeInOneTrail; i++)
+        // {
+        //     for (int j = 0; j < _moons.Count; j++)
+        //     {
+        //         reorderedVertices[(i * _moons.Count + _moons.Count - 1 - j)] =
+        //             allVertices[(_moons.Count - 1 - j) * verticeInOneTrail + i];
+        //     }
+        // }
+
+        for (int i = 0; i < _moons.Count; i++)
         {
-            for (int j = 0; j < _moons.Count; j++)
+            for (int j = 0; j < verticeInOneTrail; j++)
             {
-                reorderedVertices[(i * _moons.Count + _moons.Count - 1 - j)] =
-                    allVertices[(_moons.Count - 1 - j) * verticeInOneTrail + i];
+                reorderedVertices[j * _moons.Count + _moons.Count - 1 - i] = allVertices[i * verticeInOneTrail + j];
             }
         }
 
