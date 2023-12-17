@@ -692,7 +692,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   threadCount: 0
   setFPS: 1
-  maxFPS: 30
+  maxFPS: 15
   isSetPhase: 0
   setPhase: 10
   timeScale: 1
