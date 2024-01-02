@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RotationController : MonoBehaviour
 {
+    public bool isOn = false;
     private bool isRotating = false;
 
     private Vector3 initialPos = new Vector3();
@@ -23,6 +24,7 @@ public class RotationController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(!isOn) return;
         if (Input.GetMouseButtonDown(0))
         {
             isRotating = true;

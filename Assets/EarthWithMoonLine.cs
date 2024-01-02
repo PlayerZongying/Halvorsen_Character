@@ -6,11 +6,11 @@ public class EarthWithMoonLine : MonoBehaviour
 {
     private const int LineLength = 1500;
     private const int StandardFPS = 300;
-
-    [FormerlySerializedAs("vertexArrayLength")]
+    
     public int threadCount;
+
     public bool setFPS = false;
-    [Range(15, 300)] public int maxFPS = 300;
+    [Range(15, 300)] public int maxFPS = 60;
     public bool initRotate = true;
     public GameObject rotationController;
     public GameObject realMoon;
@@ -36,7 +36,10 @@ public class EarthWithMoonLine : MonoBehaviour
         // #endif
         if (setFPS)
         {
+#if UNITY_EDITOR
+#endif
             Application.targetFrameRate = maxFPS;
+            // QualitySettings.vSyncCount = 1;
             threadCount = Mathf.RoundToInt((float)StandardFPS / maxFPS);
             firstVertices = new Vector3[threadCount];
             rotationInOneFrame = Quaternion.identity;
@@ -83,7 +86,7 @@ public class EarthWithMoonLine : MonoBehaviour
         {
             rotationInOneFrame *= transform.rotation;
         }
-        
+
         for (int i = 0; i < LineLength; i++)
         {
             Vector3 vertex = allVertices[i];
@@ -137,14 +140,14 @@ public class EarthWithMoonLine : MonoBehaviour
     {
         RotateEarth();
         MoveEarth();
-        
+
         MoveMoon();
-        
+
         // generate new vertices in the ring plane.
         GenerateNewVertices();
         // rotate the vertices in one segment for up scaling 
         RotateNewVertices();
-        
+
         UpdateAllVertices();
         RotateAllVertices();
         // set all the vertices into line renderer
@@ -169,10 +172,10 @@ public class EarthWithMoonLine : MonoBehaviour
             transform.position += Time.deltaTime * velocity * Vector3.down;
         }
     }
+
     void MoveMoon()
     {
         Vector3 pos = new Vector3(Mathf.Cos(Time.time * angularVel), 0, Mathf.Sin(Time.time * angularVel)) * radius;
         realMoon.transform.position = transform.TransformPoint(pos);
     }
-
 }
