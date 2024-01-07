@@ -514,12 +514,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 653572817}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7af46585769d6c1438ff2a60175e085f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initRotate: 1
+  initRotate: 0
   setFPS: 0
   maxFPS: 15
   moon: {fileID: 3338361638699313372}
@@ -530,8 +530,8 @@ MonoBehaviour:
   velocity: 10
   angularVel: 1
   radius: 5
-  lastPos: {x: 0, y: 0, z: 0}
-  lastRot: {x: 0, y: 0, z: 0, w: 1}
+  lastLocalOrigin: {x: 0, y: 0, z: 0}
+  lastLocalRot: {x: 0, y: 0, z: 0, w: 1}
 --- !u!65 &653572819
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -654,7 +654,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 653572817}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cc1601930a2a3584a8b4526b05626771, type: 3}
   m_Name: 

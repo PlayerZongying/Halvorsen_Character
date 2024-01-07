@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Earth : MonoBehaviour
 {
@@ -22,9 +23,11 @@ public class Earth : MonoBehaviour
     public float angularVel = 1;
     public float radius = 5;
 
-    public Vector3 lastPos = Vector3.zero;
+    public Vector3 lastLocalOrigin = Vector3.zero;
 
-    public Quaternion lastRot = Quaternion.identity;
+    public Quaternion lastLocalRot = Quaternion.identity;
+
+    public Vector3 lastScale = Vector3.one;
 
     // Start is called before the first frame update
     private void Awake()
@@ -156,17 +159,40 @@ public class Earth : MonoBehaviour
 
         UIFPS.instance.TrailCount.text = count.ToString();
 
-        Vector3 curPos = transform.position;
+        Vector3 curLocalOrigin = transform.position;
+        Quaternion curLocalRotation = transform.rotation;
+        Vector3 curScale = transform.localScale;
+
         for (int i = 0; i < count; i++)
         {
-            Vector3 vertex = vertices[i] - curPos;
-            vertex += curPos - lastPos;
-            Vector3 newVertex = transform.TransformPoint(vertex);
-            vertices[i] = newVertex;
+            
+            // Step 1: decide local position 
+            // Deal with translation from local space
+            Vector3 curWorldPos = vertices[i];
+            Vector3 localPos = curWorldPos - curLocalOrigin;
+            localPos += curLocalOrigin - lastLocalOrigin;
+
+            // Deal with rotation of local space
+            localPos = Quaternion.Inverse(lastLocalRot) * localPos;
+
+            // Deal with scale of local space
+            localPos = new Vector3(
+                localPos.x / lastScale.x,
+                localPos.y / lastScale.y,
+                localPos.z / lastScale.z);
+
+
+            // Step 2: transform from local postion to world position
+            Vector3 worldPos = transform.TransformPoint(localPos);
+
+            // Step 3: set the world position
+            vertices[i] = worldPos;
         }
 
         // print("-----------------------------------");
-        lastPos = curPos;
+        lastLocalOrigin = curLocalOrigin;
+        lastLocalRot = curLocalRotation;
+        lastScale = curScale;
         moonTrail.SetPositions(vertices);
     }
 
@@ -185,13 +211,13 @@ public class Earth : MonoBehaviour
             for (int i = 0; i < count; i++)
             {
                 Vector3 vertex = vertices[i] - curPos;
-                vertex += curPos - lastPos;
+                vertex += curPos - lastLocalOrigin;
                 Vector3 newVertex = transform.TransformPoint(vertex);
                 vertices[i] = newVertex;
             }
 
             // print("-----------------------------------");
-            lastPos = curPos;
+            lastLocalOrigin = curPos;
             trail.SetPositions(vertices);
         }
     }
