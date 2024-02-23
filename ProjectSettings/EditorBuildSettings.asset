@@ -5,7 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Can you hear the music.unity
     guid: b006a17359b6f8f4bacd20d1c1de9c81
+  - enabled: 1
+    path: Assets/Scenes/Gift For Mom.unity
+    guid: 47c37879168f8884ca3b1ee22a2859ca
   m_configObjects: {}

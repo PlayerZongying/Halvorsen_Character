@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class RotationController : MonoBehaviour
 {
     public bool isOn = false;
+    public float rotateMagnitude = 5;
     private bool isRotating = false;
 
     private Vector3 initialPos = new Vector3();
@@ -34,7 +36,7 @@ public class RotationController : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
-            oriantationInEulerAngle = Input.mousePosition - initialPos;
+            oriantationInEulerAngle = (Input.mousePosition - initialPos) * rotateMagnitude;
 
             Vector3 upInViewSpace = camera.transform.up;
             Vector3 rightInViewSpace = camera.transform.right;
@@ -56,6 +58,16 @@ public class RotationController : MonoBehaviour
         if (isRotating)
         {
             transform.rotation = targetRot;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            transform.rotation = Quaternion.identity;
         }
     }
 

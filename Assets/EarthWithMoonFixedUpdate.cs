@@ -18,6 +18,8 @@ public class EarthWithMoonFixedUpdate : MonoBehaviour
     public float angularVel = 1;
     public float radius = 5;
 
+    public bool isCursorVisible = false;
+
 
     // for lines update
 
@@ -52,7 +54,7 @@ public class EarthWithMoonFixedUpdate : MonoBehaviour
 
     void Start()
     {
-        Cursor.visible = false;
+        Cursor.visible = isCursorVisible;
         
         if (initRotate)
         {
