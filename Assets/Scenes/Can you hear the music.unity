@@ -257,6 +257,55 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 143713883}
   m_CullTransparentMesh: 1
+--- !u!1 &353537085
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 353537087}
+  - component: {fileID: 353537086}
+  m_Layer: 0
+  m_Name: HighResolutionScreenshotManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &353537086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 353537085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d613372f7192514592ce4956fa3df72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetCamera: {fileID: 1052690564}
+  screenshotWidth: 3840
+  screenshotHeight: 2160
+  baseFileName: HighResScreenshot
+  saveDirectory: Screenshots
+--- !u!4 &353537087
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 353537085}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &369090717
 GameObject:
   m_ObjectHideFlags: 0
@@ -644,6 +693,7 @@ MonoBehaviour:
   velocity: 10
   angularVel: 1
   radius: 5
+  isCursorVisible: 0
   realMoonLine: {fileID: 3338361638699313377}
 --- !u!1 &678885896
 GameObject:
@@ -690,6 +740,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOn: 0
+  rotateMagnitude: 5
 --- !u!1 &724051057
 GameObject:
   m_ObjectHideFlags: 0
@@ -3259,6 +3310,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RealMoon
       objectReference: {fileID: 0}
+    - target: {fileID: 9113048967300699469, guid: 944384f521c7c9b4ca27af2cfac4079f, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3281,3 +3336,4 @@ SceneRoots:
   - {fileID: 7888275126488032173}
   - {fileID: 724051059}
   - {fileID: 1357244878}
+  - {fileID: 353537087}
