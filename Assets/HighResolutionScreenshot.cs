@@ -1,20 +1,51 @@
 using UnityEngine;
 using System.IO;
+using Unity.Collections;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class HighResolutionScreenshot : MonoBehaviour
 {
     public Camera targetCamera; // 要截图的相机
     public int screenshotWidth = 3840; // 4K 的宽度
     public int screenshotHeight = 2160; // 4K 的高度
+    public float pauseTime = 30f;
+    [SerializeField, ReadOnly]
+    private float elapsedTime = 0f;
+    private bool triggered = false;
     public string baseFileName = "HighResScreenshot"; // 基础文件名
     public string saveDirectory = "Screenshots"; // 保存截图的文件夹
+    
+#if UNITY_EDITOR
+    void OnGUI()
+    {
+        Event e = Event.current;
+        if (EditorApplication.isPaused && e.type == EventType.KeyDown && e.keyCode == KeyCode.P)
+        {
+            Debug.Log("Paused Screenshot Triggered");
+            CaptureHighResolutionScreenshot();
+        }
+    }
+#endif
+    
 
     void Update()
     {
+        elapsedTime += Time.deltaTime;
         if (Input.GetKeyDown(KeyCode.P)) // 按下 P 键截屏
         {
             CaptureHighResolutionScreenshot();
         }
+#if UNITY_EDITOR
+        if (!triggered && Time.time >= pauseTime)
+        {
+            EditorApplication.isPaused = true; // 自动点击“暂停”按钮
+            Debug.Log("Editor paused at " + Time.time + "s");
+            triggered = true;
+        }
+#endif
+        
     }
 
     void CaptureHighResolutionScreenshot()

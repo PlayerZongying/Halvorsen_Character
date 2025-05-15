@@ -289,6 +289,8 @@ MonoBehaviour:
   targetCamera: {fileID: 1052690564}
   screenshotWidth: 3840
   screenshotHeight: 2160
+  pauseTime: 45
+  elapsedTime: 0
   baseFileName: HighResScreenshot
   saveDirectory: Screenshots
 --- !u!4 &353537087
